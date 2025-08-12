@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Salary Prediction App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .container {
+            background: #fff;
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 32px 24px 24px 24px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        h2 {
+            color: #f76b1c;
+            margin-bottom: 24px;
+        }
+        label {
+            font-size: 1.1em;
+            color: #333;
+        }
+        input[type="number"] {
+            width: 80%;
+            padding: 10px;
+            margin: 16px 0;
+            border: 1px solid #f76b1c;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.2s;
+        }
+        input[type="number"]:focus {
+            border-color: #fda085;
+            outline: none;
+        }
+        button {
+            background: linear-gradient(90deg, #f76b1c 0%, #fad961 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(247, 107, 28, 0.15);
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #fad961 0%, #f76b1c 100%);
+        }
+        #result {
+            margin-top: 24px;
+            font-size: 1.2em;
+            color: #2d8f2d;
+            font-weight: bold;
+        }
+        @media (max-width: 500px) {
+            .container {
+                max-width: 95vw;
+                padding: 16px 8px;
+            }
+            input[type="number"] {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Salary Prediction App</h2>
+        <label for="years">Years of Experience:</label><br>
+        <input type="number" id="years" min="0" step="0.1" placeholder="Enter years of experience">
+        <br>
+        <button onclick="predictSalary()">Predict Salary</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        function predictSalary() {
+            const years = document.getElementById('years').value;
+            document.getElementById('result').innerText = "Predicting...";
+            fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ YearsExperience: Number(years) })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.predicted_salary !== undefined) {
+                    document.getElementById('result').innerText =
+                        "Predicted Salary: $" + data.predicted_salary;
+                } else {
+                    document.getElementById('result').innerText =
+                        "Error: " + (data.error || "Unknown error");
+                }
+            })
+            .catch(() => {
+                document.getElementById('result').innerText =
+                    "Error: Unable to connect to server.";
+            });
+        }
+    </script>
+</body>
+</html>

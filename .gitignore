@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual env
+venv/
+env/
+.venv/
+
+# Model & data (optional)
+*.pkl
+*.joblib
+*.h5
+*.csv
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
