@@ -10,7 +10,6 @@ env/
 .venv/
 
 # Model & data (optional)
-*.pkl
 *.joblib
 *.h5
 *.csv
